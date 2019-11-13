@@ -44,7 +44,7 @@ RUN eval "$(./miniconda3/bin/conda shell.bash hook)"
 RUN ./miniconda3/bin/conda init
 
 # WORKDIR ~
-COPY ./tools/ ./
+# COPY ./tools/ ./
 
 # Expose ports for jupyter and browser-sync
 EXPOSE 8888 3000 3001
@@ -54,4 +54,4 @@ EXPOSE 8888 3000 3001
 
 # Run app.py when the container launches
 # CMD ["python", "app.py"]
-CMD "./start.sh --server"
+# CMD "./start.sh --server"
