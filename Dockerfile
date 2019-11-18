@@ -4,12 +4,14 @@ FROM ubuntu:latest
 # Install items requiring root access
 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install --no-install-recommends -y \
     apt-utils \
     fswatch \
     npm \
     rbenv \
-    wget
+    ruby-build \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g browser-sync
 
@@ -25,14 +27,13 @@ ENV LANGUAGE "en_US.UTF-8"
 
 # Install ruby environment
 RUN echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-
 #  Install latest ruby
 RUN rbenv install $(rbenv install -l | grep -v - | tail -1)
-RUN rbenv global $(rbenv install -l | grep -v - | tail -1)
-
-#  Install bundler in ruby environment
+RUN rbenv global  $(rbenv install -l | grep -v - | tail -1)
+#  Install bundler in global ruby
 RUN (eval "$(rbenv init -)"; gem install bundler)
 
+# Install conda
 RUN mkdir $HOME/.conda
 RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ./miniconda.sh
 RUN chmod +x ./miniconda.sh
@@ -40,16 +41,3 @@ RUN chmod +x ./miniconda.sh
 RUN bash ./miniconda.sh -b -p ./miniconda3
 RUN eval "$(./miniconda3/bin/conda shell.bash hook)"
 RUN ./miniconda3/bin/conda init
-
-# WORKDIR ~
-# COPY ./tools/ ./
-
-# Expose ports for jupyter and browser-sync
-EXPOSE 8888 3000 3001
-
-# Define environment variable
-#ENV NAME notebook
-
-# Run app.py when the container launches
-# CMD ["python", "app.py"]
-# CMD "./start.sh --server"
