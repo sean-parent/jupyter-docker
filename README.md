@@ -13,7 +13,7 @@ docker image build --no-cache -t docs-tool-cpp-base:1.0.0 .
 https://github.com/sean-parent/jupyter-docker/packages?package_type=Docker
 
 docker image build -t docker.pkg.github.com/sean-parent/jupyter-docker/docs-tool-cpp-base:1.0.1 .
-docker push docker.pkg.github.com/sean-parent/jupyter-docker/docs-tool-cpp-base:1.0.0
+docker push docker.pkg.github.com/sean-parent/jupyter-docker/docs-tool-cpp-base:1.1.0
 docker tag a26d55c04a35 docker.pkg.github.com/sean-parent/jupyter-docker/docs-tool-cpp-base:1.0.0
 
 
