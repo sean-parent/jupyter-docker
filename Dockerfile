@@ -1,5 +1,5 @@
 # Build from the latest ubuntu release
-FROM ubuntu:rolling
+FROM ubuntu:latest
 
 # Install items requiring root access
 
@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     rbenv \
     wget \
     zlib1g-dev \
-  && rm -rf /var/lib/apt/lists/*
+&& rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g npm@latest
 RUN npm install -g browser-sync
@@ -46,8 +46,8 @@ RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -
 RUN chmod +x ./miniconda.sh
 # https://docs.anaconda.com/anaconda/install/silent-mode/
 RUN bash ./miniconda.sh -b -p ./miniconda3
-RUN eval "$(./miniconda3/bin/conda shell.bash hook)"
-RUN ./miniconda3/bin/conda init
+RUN eval "$(~/miniconda3/bin/conda shell.bash hook)"; conda init; \
+    conda update -n base -c defaults conda
 
 # Add version file last to avoid cache invalidation for minor releases
 ADD VERSION .
