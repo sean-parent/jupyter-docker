@@ -3,7 +3,7 @@ _install docker_
 
 
 ```
-VERSION="1.2.1"
+VERSION="1.2.2"
 echo $VERSION > ./VERSION
 docker build -t docker.pkg.github.com/sean-parent/jupyter-docker/docs-tool-cpp-base:latest .
 docker tag docker.pkg.github.com/sean-parent/jupyter-docker/docs-tool-cpp-base:latest \
