@@ -4,18 +4,24 @@ FROM ubuntu:latest
 # Install items requiring root access
 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install --no-install-recommends -y \
+RUN apt-get update && apt-get install -y \
     apt-utils \
     fswatch \
     g++ \
     git \
     libreadline-dev \
     make \
+    nodejs \
     npm \
     rbenv \
     wget \
-    zlib1g-dev \
-&& rm -rf /var/lib/apt/lists/*
+    zlib1g-dev
+
+RUN apt-get install -y libyaml-dev
+
+RUN npm install -g n
+# Turn off XZ compression because 20.5.1 had a broken link
+RUN export N_USE_XZ=0; n latest
 
 RUN npm install -g npm@latest
 RUN npm install -g browser-sync
@@ -37,6 +43,10 @@ RUN git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ru
 #  Install latest ruby
 RUN rbenv install $(rbenv install -l | grep -v - | tail -1)
 RUN rbenv global  $(rbenv install -l | grep -v - | tail -1)
+#  Update rubygems
+RUN (eval "$(rbenv init -)"; gem install rubygems-update)
+RUN (eval "$(rbenv init -)"; update_rubygems)
+RUN (eval "$(rbenv init -)"; gem update --system)
 #  Install bundler in global ruby
 RUN (eval "$(rbenv init -)"; gem install bundler)
 
